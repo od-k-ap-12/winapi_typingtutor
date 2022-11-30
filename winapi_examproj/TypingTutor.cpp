@@ -37,6 +37,16 @@ BOOL TypingTutor::Cls_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	pNID->uCallbackMessage = WM_ICON;
 	pNID->uFlags = NIF_TIP | NIF_ICON | NIF_MESSAGE | NIF_INFO;
 	pNID->uID = ID_TRAYICON;
+
+	TCHAR GUID[] = TEXT("{D99CD3E0-670D-4def-9B74-99FD7E793DFB}");
+	hMutex = CreateMutex(NULL, FALSE, GUID);
+	DWORD dwAnswer = WaitForSingleObject(hMutex, 0);
+	if (dwAnswer == WAIT_TIMEOUT)
+	{
+		MessageBox(hwnd, TEXT("App is already running."), TEXT("Warning"), MB_OK | MB_ICONINFORMATION);
+		EndDialog(hwnd, 0);
+	}
+
 	return TRUE;
 }
 

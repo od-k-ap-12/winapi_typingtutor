@@ -17,6 +17,7 @@ public:
 	HWND hDialog;
 	HICON hIcon;
 	PNOTIFYICONDATA pNID;
+	HANDLE hMutex;
 };
 
 
