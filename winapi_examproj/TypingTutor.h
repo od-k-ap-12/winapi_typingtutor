@@ -14,10 +14,12 @@ public:
 	void Cls_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify);
 	void Cls_OnSize(HWND hwnd, UINT state, int cx, int cy);
 	void OnTrayIcon(WPARAM wp, LPARAM lp);
+	HBRUSH OnCtlColor(HWND hwnd, HDC hdc, HWND hwndCtl, INT nCtlColor);
 	HWND hDialog;
 	HICON hIcon;
 	PNOTIFYICONDATA pNID;
 	HANDLE hMutex;
+	HBRUSH hBackground;
 };
 
 

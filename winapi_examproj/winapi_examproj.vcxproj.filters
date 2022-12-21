@@ -27,7 +27,7 @@
     <ClInclude Include="winapi_examproj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
+    <ClInclude Include="LevelSelect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TypingTutor.h">
@@ -41,7 +41,7 @@
     <ClCompile Include="winapi_examproj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
+    <ClCompile Include="LevelSelect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TypingTutor.cpp">
@@ -58,6 +58,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="winapi_examproj.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\AMD\Desktop\correct.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\AMD\Desktop\wrong.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

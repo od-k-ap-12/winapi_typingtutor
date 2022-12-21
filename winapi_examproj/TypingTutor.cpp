@@ -1,9 +1,23 @@
 #include "TypingTutor.h"
-
+#include "LevelSelect.h"
+#include <conio.h>
+#include <stdio.h>
+#include <string>
+using std::wstring;
 #define WM_ICON WM_APP
 #define ID_TRAYICON WM_USER
+HBITMAP hBmp[2];
+HWND hPic,hEditText,hEditOutput,hLevelSelect;
+static int CorrectLetter = 0;
+static int WrongLetter = 0;
+static int CurrentLetter = 0;
+TCHAR Text[200]=TEXT("Sample text");
+int TextLength = _tcslen(Text);
+TCHAR str[200];
 
 TypingTutor* TypingTutor::ptr = NULL;
+void KeyUpHandler(HWND hwnd, WPARAM wParam, LPARAM lParam);
+void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam);
 
 TypingTutor::TypingTutor(void)
 {
@@ -23,7 +37,16 @@ void TypingTutor::Cls_OnClose(HWND hwnd)
 
 BOOL TypingTutor::Cls_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
+	hLevelSelect = GetDlgItem(hwnd, IDC_LEVELSELECT);
+	hBackground = CreateSolidBrush(RGB(182, 180, 219));
 	hDialog = hwnd;
+	hEditText = GetDlgItem(hwnd, IDC_EDIT1);
+	hEditOutput = GetDlgItem(hwnd, IDC_EDIT2);
+
+	hPic = GetDlgItem(hwnd, IDC_PICTURECONTROL);
+	hBmp[0] = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1));
+	hBmp[1] = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP2));
+	SetWindowText(hEditText, Text);
 
 	HINSTANCE hInst = GetModuleHandle(NULL);
 
@@ -47,13 +70,45 @@ BOOL TypingTutor::Cls_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 		EndDialog(hwnd, 0);
 	}
 
+
+
 	return TRUE;
 }
 
 void TypingTutor::Cls_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
+	if (id == IDC_LEVELSELECT) {
+		MainMenu dlg;
+		INT_PTR result = DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_MAINMENU), hwnd, (DLGPROC)MainMenu::DlgProc);
 
+		if (result == IDC_EASY) {
+			EnableWindow(hLevelSelect, FALSE);
+			ShowWindow(hLevelSelect, FALSE);
+		}
+		else if (result == IDC_MEDIUM) {
+			EnableWindow(hLevelSelect, FALSE);
+			ShowWindow(hLevelSelect, FALSE);
+		}
+		else if (result == IDC_HARD) {
+			EnableWindow(hLevelSelect, FALSE);
+			ShowWindow(hLevelSelect, FALSE);
+		}
+	}
+
+	if (id == IDMENU) {
+		EndDialog(hwnd, 0);
+	}
 }
+
+HBRUSH TypingTutor::OnCtlColor(HWND hwnd, HDC hdc, HWND hwndCtl, INT nCtlColor)
+{
+	switch (nCtlColor)
+	{
+	case CTLCOLOR_DLG:
+		return hBackground;
+	}
+}
+
 
 void TypingTutor::Cls_OnSize(HWND hwnd, UINT state, int cx, int cy)
 {
@@ -64,7 +119,7 @@ void TypingTutor::Cls_OnSize(HWND hwnd, UINT state, int cx, int cy)
 	}
 }
 
-// обработчик пользовательского сообщения
+
 void TypingTutor::OnTrayIcon(WPARAM wp, LPARAM lp)
 {
 	if (lp == WM_LBUTTONDBLCLK)
@@ -82,13 +137,41 @@ BOOL CALLBACK TypingTutor::DlgProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
 		HANDLE_MSG(hwnd, WM_CLOSE, ptr->Cls_OnClose);
 		HANDLE_MSG(hwnd, WM_INITDIALOG, ptr->Cls_OnInitDialog);
 		HANDLE_MSG(hwnd, WM_COMMAND, ptr->Cls_OnCommand);
+		HANDLE_MSG(hwnd, WM_CTLCOLORDLG, ptr->OnCtlColor);
 		HANDLE_MSG(hwnd, WM_SIZE, ptr->Cls_OnSize);
+
+		case WM_CHAR:
+			WmCharHandler(hwnd, wParam, lParam);
+			break;
+		}
+		if (message == WM_ICON)
+		{
+			ptr->OnTrayIcon(wParam, lParam);
+			return TRUE;
+		}
+		return FALSE;
 	}
-	// пользовательское сообщение
-	if (message == WM_ICON)
-	{
-		ptr->OnTrayIcon(wParam, lParam);
-		return TRUE;
+
+
+void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
+{
+	if (CurrentLetter == TextLength) {
+		_stprintf_s(str, TEXT("Correct letters=%d Wrong letters=%d"), CorrectLetter,WrongLetter);
+		MessageBox(0, str, TEXT("Results"), MB_OK | MB_ICONINFORMATION);
 	}
-	return FALSE;
+	
+	WCHAR symbol = wParam;
+	static wstring str;
+	if (symbol == Text[CurrentLetter]) {
+		str += symbol;
+		SetWindowText(hEditOutput, str.c_str());
+		SendMessage(hPic, STM_SETIMAGE, WPARAM(IMAGE_BITMAP), LPARAM(hBmp[0]));
+		++CorrectLetter;
+		++CurrentLetter;
+	}
+	else if (symbol != Text[CurrentLetter]) {
+		SendMessage(hPic, STM_SETIMAGE, WPARAM(IMAGE_BITMAP), LPARAM(hBmp[1]));
+		++WrongLetter;
+	}
+	
 }
