@@ -141,14 +141,12 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="Header.h" />
-    <ClInclude Include="LevelSelect.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TypingTutor.h" />
     <ClInclude Include="winapi_examproj.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="LevelSelect.cpp" />
     <ClCompile Include="TypingTutor.cpp" />
     <ClCompile Include="winapi_examproj.cpp" />
   </ItemGroup>

@@ -27,9 +27,6 @@
     <ClInclude Include="winapi_examproj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LevelSelect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TypingTutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -39,9 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winapi_examproj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LevelSelect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TypingTutor.cpp">

@@ -1,5 +1,4 @@
-﻿#include "LevelSelect.h"
-#include "TypingTutor.h"
+﻿#include "TypingTutor.h"
 
 int WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPTSTR lpszCmdLine, int nCmdShow)
 {

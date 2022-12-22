@@ -1,8 +1,11 @@
 #include "TypingTutor.h"
-#include "LevelSelect.h"
 #include <conio.h>
 #include <stdio.h>
 #include <string>
+#include <fstream>
+#define STR_LEN 200
+using namespace std;
+
 using std::wstring;
 #define WM_ICON WM_APP
 #define ID_TRAYICON WM_USER
@@ -11,13 +14,17 @@ HWND hPic,hEditText,hEditOutput,hLevelSelect;
 static int CorrectLetter = 0;
 static int WrongLetter = 0;
 static int CurrentLetter = 0;
-TCHAR Text[200]=TEXT("Sample text");
-int TextLength = _tcslen(Text);
-TCHAR str[200];
+TCHAR Text[STR_LEN]=TEXT("Please, select a level.");
+static int TextLength;
+TCHAR str[STR_LEN];
+static bool IsLevelSelected = false;
+static bool IsGameStarted = false;
 
 TypingTutor* TypingTutor::ptr = NULL;
 void KeyUpHandler(HWND hwnd, WPARAM wParam, LPARAM lParam);
 void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam);
+
+
 
 TypingTutor::TypingTutor(void)
 {
@@ -155,21 +162,62 @@ BOOL CALLBACK TypingTutor::DlgProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
 
 void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
-	if (CurrentLetter == TextLength) {
-		_stprintf_s(str, TEXT("Correct letters=%d Wrong letters=%d"), CorrectLetter,WrongLetter);
-		MessageBox(0, str, TEXT("Results"), MB_OK | MB_ICONINFORMATION);
-	}
 	
 	WCHAR symbol = wParam;
-	static wstring str;
-	if (symbol == Text[CurrentLetter]) {
-		str += symbol;
-		SetWindowText(hEditOutput, str.c_str());
+	static wstring Output;
+	static wstring TextFile;
+	static wstring Line;
+	if (symbol == '1'&&IsLevelSelected==false) {
+		wifstream File;
+		File.open("EasyLevel.txt");
+		while (getline(File, Line)) {
+			TextFile+=Line;
+			TextFile +=TEXT(" ");
+		}
+		File.close();
+		_stprintf_s(Text, TEXT("%s"), TextFile.c_str());
+		TextLength = TextFile.length();
+		SetWindowText(hEditText, Text);
+		IsLevelSelected = true;
+	}
+	if (symbol == '2'&&IsLevelSelected==false) {
+		wifstream File;
+		File.open("MediumLevel.txt");
+		while (getline(File, Line)) {
+			TextFile += Line;
+			TextFile += TEXT(" ");
+		}
+		File.close();
+		_stprintf_s(Text, TEXT("%s"), TextFile.c_str());
+		TextLength = TextFile.length();
+		SetWindowText(hEditText, Text);
+		IsLevelSelected = true;
+	}
+	if (symbol == '3'&& IsLevelSelected == false) {
+		wifstream File;
+		File.open("HardLevel.txt");
+		while (getline(File, Line)) {
+			TextFile += Line;
+			TextFile += TEXT(" ");
+		}
+		File.close();
+		_stprintf_s(Text, TEXT("%s"), TextFile.c_str());
+		TextLength = TextFile.length();
+		SetWindowText(hEditText, Text);
+		IsLevelSelected = true;
+	}
+	if (symbol == Text[CurrentLetter] && IsLevelSelected == true) {
+		Output += symbol;
+		SetWindowText(hEditOutput, Output.c_str());
 		SendMessage(hPic, STM_SETIMAGE, WPARAM(IMAGE_BITMAP), LPARAM(hBmp[0]));
 		++CorrectLetter;
 		++CurrentLetter;
+		if (CurrentLetter == TextLength && IsLevelSelected == true) {
+			_stprintf_s(str, TEXT("Correct letters=%d Wrong letters=%d"), CorrectLetter, WrongLetter);
+			MessageBox(0, str, TEXT("Results"), MB_OK | MB_ICONINFORMATION);
+		}
 	}
-	else if (symbol != Text[CurrentLetter]) {
+	else if (symbol != Text[CurrentLetter] && IsLevelSelected == true) {
 		SendMessage(hPic, STM_SETIMAGE, WPARAM(IMAGE_BITMAP), LPARAM(hBmp[1]));
 		++WrongLetter;
 	}
