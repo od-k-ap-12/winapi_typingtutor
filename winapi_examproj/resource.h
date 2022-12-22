@@ -54,10 +54,10 @@
 #define IDC_BUTTON57                    1031
 #define IDC_BUTTON58                    1032
 #define IDC_PICTURECONTROL              1033
-#define IDC_LEVELSELECT                 1034
 #define IDC_EASY                        1036
 #define IDC_MEDIUM                      1037
 #define IDC_HARD                        1038
+#define IDC_EDIT3                       1039
 #define IDC_BUTTON20                    1045
 #define IDC_BUTTON21                    1046
 #define IDC_BUTTON22                    1047
@@ -98,7 +98,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        133
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1039
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

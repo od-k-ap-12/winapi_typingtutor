@@ -27,8 +27,9 @@ TCHAR str[STR_LEN];
 
 static bool IsLevelSelected = false;
 
+int Time = 0;
+
 TypingTutor* TypingTutor::ptr = NULL;
-void KeyUpHandler(HWND hwnd, WPARAM wParam, LPARAM lParam);
 void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam);
 
 
@@ -51,7 +52,6 @@ void TypingTutor::Cls_OnClose(HWND hwnd)
 
 BOOL TypingTutor::Cls_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
-	hLevelSelect = GetDlgItem(hwnd, IDC_LEVELSELECT);
 	hBackground = CreateSolidBrush(RGB(182, 180, 219));
 	hDialog = hwnd;
 	hEditText = GetDlgItem(hwnd, IDC_EDIT1);
@@ -129,6 +129,7 @@ void TypingTutor::OnTrayIcon(WPARAM wp, LPARAM lp)
 
 BOOL CALLBACK TypingTutor::DlgProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	static time_t t;
 	switch (message)
 	{
 		HANDLE_MSG(hwnd, WM_CLOSE, ptr->Cls_OnClose);
@@ -136,19 +137,27 @@ BOOL CALLBACK TypingTutor::DlgProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
 		HANDLE_MSG(hwnd, WM_COMMAND, ptr->Cls_OnCommand);
 		HANDLE_MSG(hwnd, WM_CTLCOLORDLG, ptr->OnCtlColor);
 		HANDLE_MSG(hwnd, WM_SIZE, ptr->Cls_OnSize);
-
-		case WM_CHAR:
-			WmCharHandler(hwnd, wParam, lParam);
-			break;
-		}
-		if (message == WM_ICON)
+	case WM_TIMER: {
+		TCHAR str[STR_LEN];
+		wsprintf(str, TEXT("Time: %d s"), Time);
+		SetWindowText(hwnd, str);
+		if (Time == 60)
 		{
+			KillTimer(hwnd, 0);
+			_stprintf_s(str, TEXT("Correct letters=%d Wrong letters=%d"), CorrectLetter, WrongLetter);
+			MessageBox(0, str, TEXT("Results"), MB_OK | MB_ICONINFORMATION);
+		}
+		++Time;
+		break;
+	}
+
+		if (message == WM_ICON) {
 			ptr->OnTrayIcon(wParam, lParam);
 			return TRUE;
 		}
 		return FALSE;
 	}
-
+}
 
 void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
@@ -169,6 +178,7 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		TextLength = TextFile.length();
 		SetWindowText(hEditText, Text);
 		IsLevelSelected = true;
+		SetTimer(hwnd, 1, 1000, NULL);
 	}
 	if (symbol == '2'&&IsLevelSelected==false) {
 		wifstream File;
@@ -182,6 +192,7 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		TextLength = TextFile.length();
 		SetWindowText(hEditText, Text);
 		IsLevelSelected = true;
+		SetTimer(hwnd, 1, 1000, NULL);
 	}
 	if (symbol == '3'&& IsLevelSelected == false) {
 		wifstream File;
@@ -195,6 +206,7 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		TextLength = TextFile.length();
 		SetWindowText(hEditText, Text);
 		IsLevelSelected = true;
+		SetTimer(hwnd, 1, 1000, NULL);
 	}
 	if (symbol == Text[CurrentLetter] && IsLevelSelected == true) {
 		Output += symbol;
@@ -203,6 +215,7 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		++CorrectLetter;
 		++CurrentLetter;
 		if (CurrentLetter == TextLength && IsLevelSelected == true) {
+			KillTimer(hwnd, 1);
 			_stprintf_s(str, TEXT("Correct letters=%d Wrong letters=%d"), CorrectLetter, WrongLetter);
 			MessageBox(0, str, TEXT("Results"), MB_OK | MB_ICONINFORMATION);
 		}
