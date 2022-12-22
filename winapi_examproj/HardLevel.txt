@@ -1,2 +1,6 @@
-This is hard level
-Welcome to hard level
+Photosynthesis, the process by which green plants and certain other organisms transform light energy into chemical energy. 
+During photosynthesis in green plants, light energy is captured and used to convert water, carbon dioxide, and minerals into oxygen and energy-rich organic compounds.
+It would be impossible to overestimate the importance of photosynthesis in the maintenance of life on Earth.
+If photosynthesis ceased, there would soon be little food or other organic matter on Earth. 
+Most organisms would disappear, and in time Earth’s atmosphere would become nearly devoid of gaseous oxygen. 
+The only organisms able to exist under such conditions would be the chemosynthetic bacteria, which can utilize the chemical energy of certain inorganic compounds and thus are not dependent on the conversion of light energy.
