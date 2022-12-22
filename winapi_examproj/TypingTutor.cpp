@@ -6,19 +6,26 @@
 #define STR_LEN 200
 using namespace std;
 
-using std::wstring;
 #define WM_ICON WM_APP
 #define ID_TRAYICON WM_USER
+
 HBITMAP hBmp[2];
+
 HWND hPic,hEditText,hEditOutput,hLevelSelect;
+
 static int CorrectLetter = 0;
+
 static int WrongLetter = 0;
+
 static int CurrentLetter = 0;
+
 TCHAR Text[STR_LEN]=TEXT("Please, select a level.");
+
 static int TextLength;
+
 TCHAR str[STR_LEN];
+
 static bool IsLevelSelected = false;
-static bool IsGameStarted = false;
 
 TypingTutor* TypingTutor::ptr = NULL;
 void KeyUpHandler(HWND hwnd, WPARAM wParam, LPARAM lParam);
@@ -84,23 +91,6 @@ BOOL TypingTutor::Cls_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 
 void TypingTutor::Cls_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
-	if (id == IDC_LEVELSELECT) {
-		MainMenu dlg;
-		INT_PTR result = DialogBox(GetModuleHandle(NULL), MAKEINTRESOURCE(IDD_MAINMENU), hwnd, (DLGPROC)MainMenu::DlgProc);
-
-		if (result == IDC_EASY) {
-			EnableWindow(hLevelSelect, FALSE);
-			ShowWindow(hLevelSelect, FALSE);
-		}
-		else if (result == IDC_MEDIUM) {
-			EnableWindow(hLevelSelect, FALSE);
-			ShowWindow(hLevelSelect, FALSE);
-		}
-		else if (result == IDC_HARD) {
-			EnableWindow(hLevelSelect, FALSE);
-			ShowWindow(hLevelSelect, FALSE);
-		}
-	}
 
 	if (id == IDMENU) {
 		EndDialog(hwnd, 0);
