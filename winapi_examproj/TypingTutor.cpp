@@ -67,7 +67,9 @@ BOOL TypingTutor::Cls_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 
 	HINSTANCE hInst = GetModuleHandle(NULL);
 
-	hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_WINAPIEXAMPROJ));
+	hIcon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON1));
+	SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
+	SendMessage(hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
 	SetClassLong(hDialog, -14, LONG(hIcon));
 	memset(pNID, 0, sizeof(NOTIFYICONDATA));
 	pNID->cbSize = sizeof(NOTIFYICONDATA);
@@ -237,3 +239,4 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	}
 
 }
+//taskkill /F /IM winapi_examproj.exe
