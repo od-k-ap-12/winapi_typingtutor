@@ -9,25 +9,18 @@ using namespace std;
 #define WM_ICON WM_APP
 #define ID_TRAYICON WM_USER
 
-HBITMAP hBmp[2];
-
+HBITMAP hBmp[3];
 HWND hPic, hEditText, hEditInput, hLevelSelect, hTimer;
 
 static int CorrectLetter = 0;
-
 static int WrongLetter = 0;
-
 static int CurrentLetter = 0;
-
 TCHAR Text[STR_LEN] = TEXT("Please, select a level.");
-
 static int TextLength;
-
 TCHAR str[STR_LEN];
-
 static bool IsLevelSelected = false;
-
 int Time = 0;
+static wstring Input;
 
 TypingTutor* TypingTutor::ptr = NULL;
 //void KeyUpHandler(HWND hwnd, WPARAM wParam, LPARAM lParam);
@@ -62,6 +55,7 @@ BOOL TypingTutor::Cls_OnInitDialog(HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	hPic = GetDlgItem(hwnd, IDC_PICTURECONTROL);
 	hBmp[0] = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP1));
 	hBmp[1] = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP2));
+	hBmp[2] = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_BITMAP3));
 	SetWindowText(hEditText, Text);
 	SetWindowText(hEditInput, TEXT(" "));
 
@@ -149,7 +143,13 @@ BOOL CALLBACK TypingTutor::DlgProc(HWND hwnd, UINT message, WPARAM wParam, LPARA
 			MessageBox(0, str, TEXT("Results"), MB_OK | MB_ICONINFORMATION);
 			SetWindowText(hTimer, str);
 			SetWindowText(hEditText, TEXT("Level is over"));
+			SetWindowText(hEditInput, TEXT(" "));
+			Input.clear();
+			CurrentLetter = 0;
+			CorrectLetter = 0;
+			WrongLetter = 0;
 			IsLevelSelected = false;
+			SendMessage(hPic, STM_SETIMAGE, WPARAM(IMAGE_BITMAP), LPARAM(hBmp[2]));
 			Time = 0;
 		}
 		++Time;
@@ -173,10 +173,10 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
 
 	WCHAR symbol = wParam;
-	static wstring Output;
 	static wstring TextFile;
 	static wstring Line;
 	if (symbol == '1' && IsLevelSelected == false) {
+		TextFile.clear();
 		wifstream File;
 		File.open("EasyLevel.txt");
 		while (getline(File, Line)) {
@@ -191,6 +191,7 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		SetTimer(hwnd, 1, 1000, NULL);
 	}
 	if (symbol == '2' && IsLevelSelected == false) {
+		TextFile.clear();
 		wifstream File;
 		File.open("MediumLevel.txt");
 		while (getline(File, Line)) {
@@ -205,6 +206,7 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		SetTimer(hwnd, 1, 1000, NULL);
 	}
 	if (symbol == '3' && IsLevelSelected == false) {
+		TextFile.clear();
 		wifstream File;
 		File.open("HardLevel.txt");
 		while (getline(File, Line)) {
@@ -219,8 +221,8 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		SetTimer(hwnd, 1, 1000, NULL);
 	}
 	if (symbol == Text[CurrentLetter] && IsLevelSelected == true) {
-		Output += symbol;
-		SetWindowText(hEditInput, Output.c_str());
+		Input += symbol;
+		SetWindowText(hEditInput, Input.c_str());
 		SendMessage(hPic, STM_SETIMAGE, WPARAM(IMAGE_BITMAP), LPARAM(hBmp[0]));
 		++CorrectLetter;
 		++CurrentLetter;
@@ -229,7 +231,13 @@ void WmCharHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 			_stprintf_s(str, TEXT("Correct letters=%d Wrong letters=%d"), CorrectLetter, WrongLetter);
 			SetWindowText(hTimer, str);
 			SetWindowText(hEditText, TEXT("Level is over"));
+			SetWindowText(hEditInput, TEXT(" "));
+			Input.clear();
+			CurrentLetter = 0;
+			CorrectLetter = 0;
+			WrongLetter = 0;
 			IsLevelSelected = false;
+			SendMessage(hPic, STM_SETIMAGE, WPARAM(IMAGE_BITMAP), LPARAM(hBmp[2]));
 			MessageBox(0, str, TEXT("Results"), MB_OK | MB_ICONINFORMATION);
 		}
 	}

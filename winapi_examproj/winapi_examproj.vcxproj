@@ -157,7 +157,10 @@
     <Image Include="C:\Users\AMD\Desktop\correct.bmp" />
     <Image Include="C:\Users\AMD\Desktop\keycap.ico" />
     <Image Include="C:\Users\AMD\Desktop\wrong.bmp" />
+    <Image Include="default.bmp" />
+    <Image Include="level.bmp" />
     <Image Include="small.ico" />
+    <Image Include="text.bmp" />
     <Image Include="winapi_examproj.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -63,5 +63,14 @@
     <Image Include="C:\Users\AMD\Desktop\keycap.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="default.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="level.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="text.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
