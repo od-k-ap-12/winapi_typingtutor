@@ -30,7 +30,6 @@
 #define IDC_EDIT2                       1011
 #define IDC_BUTTON42                    1012
 #define IDEXIT                          1013
-#define IDMENU                          1013
 #define IDC_BUTTON49                    1014
 #define IDC_BUTTON50                    1015
 #define IDC_BUTTON51                    1016
@@ -58,6 +57,8 @@
 #define IDC_MEDIUM                      1037
 #define IDC_HARD                        1038
 #define IDC_EDIT3                       1039
+#define IDC_TEXT                        1040
+#define IDC_INPUT                       1041
 #define IDC_BUTTON20                    1045
 #define IDC_BUTTON21                    1046
 #define IDC_BUTTON22                    1047
@@ -98,7 +99,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        133
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1040
+#define _APS_NEXT_CONTROL_VALUE         1042
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

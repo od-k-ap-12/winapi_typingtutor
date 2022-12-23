@@ -7,6 +7,7 @@ int WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPTSTR lpszCmdLine, int n
 	MSG msg;
 	HWND hTypingTutor = CreateDialog(hInst, MAKEINTRESOURCE(IDD_TYPINGTUTOR), NULL, (DLGPROC)TypingTutor::DlgProc);
 	ShowWindow(hTypingTutor, nCmdShow); 
+	//return DialogBox(hInst, MAKEINTRESOURCE(IDD_TYPINGTUTOR), NULL, (DLGPROC)TypingTutor::DlgProc);
 	while (GetMessage(&msg, 0, 0, 0))
 	{
 		TranslateMessage(&msg);
